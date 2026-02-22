@@ -30,9 +30,10 @@ export default function App() {
     selectSuit,
   } = useGameLogic();
 
-  useEffect(() => {
-    initGame();
-  }, [initGame]);
+  // Remove automatic initialization to show rules first
+  // useEffect(() => {
+  //   initGame();
+  // }, [initGame]);
 
   useEffect(() => {
     if (winner === 'player') {
@@ -53,13 +54,16 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white font-sans overflow-hidden flex flex-col relative">
-      {/* Decorative Casino Royale Pattern Background */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffd700' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-      }} />
+      {/* Palace Interior Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 pointer-events-none" 
+        style={{
+          backgroundImage: `url("https://picsum.photos/seed/palace-interior-luxury/1920/1080")`,
+        }}
+      />
       
-      {/* Subtle Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60 pointer-events-none" />
+      {/* Subtle Gradient & Blur Overlay for better contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/80 backdrop-blur-[2px] pointer-events-none" />
 
       {/* Header */}
       <header className="p-4 flex justify-between items-center bg-black/60 backdrop-blur-xl border-b border-[#ffd700]/10 relative z-10">
@@ -189,6 +193,53 @@ export default function App() {
 
       {/* Modals */}
       <AnimatePresence>
+        {gameState === 'rules' && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="bg-[#1a1a1a] border border-[#ffd700]/30 p-8 rounded-3xl max-w-lg w-full shadow-[0_0_50px_rgba(0,0,0,0.8)] text-left"
+            >
+              <h2 className="text-3xl font-black mb-6 text-[#ffd700] text-center uppercase tracking-widest">游戏规则</h2>
+              
+              <div className="space-y-4 text-white/80 mb-8">
+                <div className="flex gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#ffd700]/20 flex items-center justify-center text-[#ffd700] font-bold text-xs shrink-0 mt-1">1</div>
+                  <p><span className="text-[#ffd700] font-bold">发牌：</span> 每位玩家初始分得 8 张牌。</p>
+                </div>
+                <div className="flex gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#ffd700]/20 flex items-center justify-center text-[#ffd700] font-bold text-xs shrink-0 mt-1">2</div>
+                  <p><span className="text-[#ffd700] font-bold">出牌：</span> 你出的牌必须在“花色”或“点数”上与弃牌堆最顶部的牌匹配。</p>
+                </div>
+                <div className="flex gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#ffd700]/20 flex items-center justify-center text-[#ffd700] font-bold text-xs shrink-0 mt-1">3</div>
+                  <p><span className="text-[#ffd700] font-bold">万能 8 点：</span> 数字“8”是万用牌。你可以在任何时候打出 8，并随后指定一个新的花色。</p>
+                </div>
+                <div className="flex gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#ffd700]/20 flex items-center justify-center text-[#ffd700] font-bold text-xs shrink-0 mt-1">4</div>
+                  <p><span className="text-[#ffd700] font-bold">摸牌：</span> 如果无牌可出，必须从摸牌堆摸一张牌。如果摸牌堆为空，则跳过该回合。</p>
+                </div>
+                <div className="flex gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#ffd700]/20 flex items-center justify-center text-[#ffd700] font-bold text-xs shrink-0 mt-1">5</div>
+                  <p><span className="text-[#ffd700] font-bold">获胜：</span> 最先清空手牌的一方获胜。</p>
+                </div>
+              </div>
+
+              <button
+                onClick={initGame}
+                className="w-full py-4 bg-gradient-to-r from-[#ffd700] to-[#b8860b] text-[#4a0404] font-bold rounded-2xl hover:brightness-110 transition-all flex items-center justify-center gap-3 text-lg shadow-[0_10px_30px_rgba(184,134,11,0.3)]"
+              >
+                我知道了，开始游戏
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+
         {gameState === 'suitSelection' && (
           <motion.div 
             initial={{ opacity: 0 }}

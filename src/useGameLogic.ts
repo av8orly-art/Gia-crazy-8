@@ -22,7 +22,7 @@ export const useGameLogic = () => {
   const [discardPile, setDiscardPile] = useState<CardData[]>([]);
   const [currentSuit, setCurrentSuit] = useState<Suit | null>(null);
   const [turn, setTurn] = useState<'player' | 'ai'>('player');
-  const [gameState, setGameState] = useState<'dealing' | 'playing' | 'suitSelection' | 'gameOver'>('dealing');
+  const [gameState, setGameState] = useState<'rules' | 'dealing' | 'playing' | 'suitSelection' | 'gameOver'>('rules');
   const [winner, setWinner] = useState<'player' | 'ai' | null>(null);
   const [message, setMessage] = useState<string>('欢迎来到 刘曜菁 的疯狂 8 点！');
   const [winMessage, setWinMessage] = useState<string>('');
